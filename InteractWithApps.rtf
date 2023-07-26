@@ -1,0 +1,80 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww18020\viewh10360\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Launch 1 Android component to another :Use intent to call.\
+2 types :\
+Explicit Intent: here we explicitly mention which component to call. Usually it is used to call component within the app as we know the components by name\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 Example :\
+Intent intent = new Intent(context, SecondActivity.class)\
+Intent.putExtra(\'93KEY_NAME\'94,VALUE)\
+startActivity(intent)\
+\
+\
+Implicit Intent: here we do not have the explicit name of the component so we identify the component by its characteristics such as action, category, data, uri. Usually used to call components outside scope of the app. Often multiple components can respond to same intent details asking user to choose via chooser\
+Example:\
+Declare intent details in manifest :\
+<intent-filter>\
+ <action name=\'93<intent-action>\'94/>\
+<category name=\'93<category-name>\'94>\
+<data /> \
+</intent-filter>\
+\
+Create Intent accordingly:\
+Intent intent = new Intent(context)\
+Intent.setAction(\'93<intent-action>\'94)\
+intent.setCategory(\'93<category-name>\'94)\
+startActivity(intent)\
+\
+Usually we do not expect any reply from called component. In case we want suitable response in return then we use startActivityWithResult(). And receive the result in onActivityResult()\
+\
+Example :\
+startActivityForResult(context, intent, requestCode)\
+onActivityResult(intent, requestCode,result)\
+\
+In case no intent handle the action it throws ActivityNotFoundException\
+\
+Chooser api :\
+startActivity(Intent.createChooser(intent,\'94<chooser title>\'94))\
+\
+\
+To let other apps access your component need to declare the component as exported and declare suitable intent filter\
+\
+\
+On Device Android Containers - \
+Define : These are are android apps which simulate Android OS but run as an app inside Android device.  They can load any app, in case if it is to be restricted :\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs28 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 <property android:name="REQUIRE_SECURE_ENV" android:value="1"/>\
+\
+\
+\
+Package Visibility Filtering :\
+Android 11 and higher OS version does not allow all apps to appear in list when we Query all activities via package manager. Such as queryIntentActivities(), getPackageInfo(), getInstalledApplications(). \
+Rules for allowing apps :\
+Some system apps providing system functionality is visible.\
+Any app interacting with the current app such which launches activity, content provider, grant uri permission, binds with service, installer app and those that receive input from your app.\
+\
+How to get all packages visible : get QUERY_ALL_PACKAGES permission. This needs separate permission from google play\
+\
+How to get selective apps visible : declare inside application element of manifest.\
+<manifest>\
+ <queries>\
+		<package android:name = \'93<package-name>\'94/>\
+		<intent>\
+			<action name=\'93\'94>\
+			<category name=\'93\'94>\
+		</intent>\
+		<provider android:authorities = \'93authority singature\'94>	\
+
+\fs26 </queries>\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 \
+\
+}
